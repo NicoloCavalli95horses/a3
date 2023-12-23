@@ -197,8 +197,8 @@ button {
     border-radius: 50%;
   }
 
-  &.down {
-    transform: scale(0.9);
-  }
+  // &.down {
+    // transform: scale(0.9);
+  // }
 }
 </style>

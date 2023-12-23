@@ -1,4 +1,5 @@
 <template>
+  <Btn class="back-btn" :def="false" @click="$router.push('/')">Back</Btn>
   <div class="main-wrapper">
     <video autoplay playsinline muted ref="webcam_ref" :class="{ 'min-video' : show_pdf }" width="420" height="420" />
     <div v-show="!show_pdf" class="btns">
@@ -17,7 +18,7 @@
 
   <template v-if="show_pdf">
     <div class="pdf-test" ref="test_ref" :class="{ 'zoomed' : zoom_in }">
-      <h1>Lorem ipsum</h1>
+      <h1>This is an example title</h1>
       <h2>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, quidem! Reiciendis blanditiis ducimus quae suscipit sint eius enim placeat tempora obcaecati voluptatibus, unde eos cupiditate nam, quaerat nisi, velit tenetur.
       Non natus nam ad, voluptas, voluptatibus explicabo illo, exercitationem adipisci modi at vitae enim quia minus animi temporibus dolores numquam atque maiores aperiam. Culpa, voluptatibus itaque corrupti excepturi ipsam modi.
       Beatae laboriosam fugit maxime magnam perferendis ut enim nisi. Similique ad dolores quam odio, fuga earum explicabo quasi temporibus laborum! Facilis dicta voluptate mollitia voluptates. Ipsam suscipit laborum voluptatum hic?
@@ -43,9 +44,17 @@
    </div>
   </template>
 
+  <Modal v-if="!ack_camera" width="420px" :click_out_close="true" @close="ack_camera=true"> 
+    <template #header>Camera required</template>
+    <p>Enable the webcam in order to use this feature</p>
+    <template #footer>
+      <Btn @click="ack_camera = true">Okay</Btn>
+    </template>
+  </Modal>
+
 
   <Btn :def="false" class="fix-bottom-center" @click="show_pdf = !show_pdf"> {{ show_pdf ? 'close test' : 'proceed to test' }}</Btn>
-  <Btn class="fix-bottom-right" @click="show_stream = !show_stream">{{ show_stream ? 'stop' : 'play' }}</Btn>
+  <Btn class="fix-bottom-right" @click="show_stream = !show_stream">{{ show_stream ? 'stop model' : 'start model' }}</Btn>
 </template>
 
 <script setup>
@@ -60,6 +69,7 @@ import {
 } from "vue";
 
 import Btn from "@/components/Btn.vue";
+import Modal from "@/components/Modal.vue";
 
 
 
@@ -78,6 +88,7 @@ const test_ref    = ref( undefined );
 const show_stream = ref( false );
 const show_pdf    = ref( false );
 const zoom_in     = ref( false );
+const ack_camera  = ref( false );
 
 const classes = reactive({
   default: {
@@ -133,7 +144,7 @@ function getPredictionLabel( class_id ) {
 }
 
 async function addNewExample( class_id ) {
-  const img = await webcam.value.capture();          // Store webcam input
+  const img = await webcam.value.capture();    // Store webcam input
   const activation = net.infer(img, true);     // Activate the model with the img input
   classifier.addExample(activation, class_id); // User input provides examples
   img.dispose();                               // Optimize memory allocation
@@ -195,6 +206,10 @@ onMounted( async () => {
 </script>
 
 <style lang="scss" scoped>
+
+.back-btn {
+  margin: 22px;
+}
 .main-wrapper {
   width: 100%;
   position: relative;

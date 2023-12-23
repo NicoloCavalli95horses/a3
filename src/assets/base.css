@@ -2,33 +2,15 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
 
 :root {
-  /* AUTUMN COLOR PALETTE */
-  --karry: rgb(255, 235, 210); 
-  --atomic-tangerine: rgb(255, 163, 100);
-  --crusta: rgb(252, 118, 67);
-  --apple-blossom: rgb(175, 79, 65);
-  --pickled-bluewood: rgb(39, 50, 72);
-  --darker-pickled-bluewood: rgb(27, 35, 50);
-
-  /* LIGHT FLAMES */
-  --quartz: #171515;
-  --cardovan: #894242;
-  --indian-red: #d55c5a;
-  --tulip: #f5918f;
-  --almond: #ebd4cc;
-  
-  /* functional references */
-  --primary: var(--crusta);
-  --secondary: var(--atomic-tangerine);
-  --footer-bg: var(--darker-pickled-bluewood);
+  --primary: #74c69d;
+  --secondary: #3dac78;
+  --footer-bg: rgb(27, 35, 50);
   --footer-bg-05: rgba(27, 35, 50, 0.5);
-  --background: var(--pickled-bluewood);
+  --background: rgb(39, 50, 72);
   --backdrop: rgba(255, 235, 210, 0.1);
-  --font-light: var(--karry);
-  --font-dark: var(--pickled-bluewood);
+  --font-light: #eee;
   --white: rgb(240, 240, 255); 
   --black: rgb(17, 17, 17);
-  --error-color: rgb(209, 44, 44);
 
   --radius-xl: 2.6rem;
   --radius-l: 1.8rem;
@@ -60,17 +42,6 @@ html {
 }
 
 body {
-  position: fixed;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  overflow-x: auto;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--nav-height-desktop);
-  width: 100%;
-  height: 100vh;
   background-color: #171515;
 }
 

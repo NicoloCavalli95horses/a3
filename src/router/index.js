@@ -17,9 +17,9 @@ const router = createRouter({
       component: Home
     },
     {
-      path: '/pdf',
-      name: 'pdf',
-      component: () => import('../views/Config.vue')
+      path: '/playground',
+      name: 'playground',
+      component: () => import('../views/Playground.vue')
     }
   ]
 })
