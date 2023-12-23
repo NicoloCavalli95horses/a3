@@ -8,13 +8,15 @@
             Add {{ key }} example ({{ classes[ key ].tot_acquired }})
           </Btn>
         </template>
-        <h2 v-show="show_stream" class="l-24 top-24">Prediction: {{ prediction.label }} ({{ prediction.confidences?.toFixed(2) }}%)</h2>
+        <h2 v-show="show_stream && prediction.label" class="l-24 top-24">
+          Prediction: {{ prediction.label }} ({{ prediction.confidences?.toFixed(2) }}%)
+        </h2>
       </div>
     </div>
   </div>
 
   <template v-if="show_pdf">
-    <div class="pdf-test" ref="test_ref">
+    <div class="pdf-test" ref="test_ref" :class="{ 'zoomed' : zoom_in }">
       <h1>Lorem ipsum</h1>
       <h2>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, quidem! Reiciendis blanditiis ducimus quae suscipit sint eius enim placeat tempora obcaecati voluptatibus, unde eos cupiditate nam, quaerat nisi, velit tenetur.
       Non natus nam ad, voluptas, voluptatibus explicabo illo, exercitationem adipisci modi at vitae enim quia minus animi temporibus dolores numquam atque maiores aperiam. Culpa, voluptatibus itaque corrupti excepturi ipsam modi.
@@ -67,12 +69,15 @@ import Btn from "@/components/Btn.vue";
 let net;
 let interval;
 
+const ZOOM_VAL = 30;
+
 const classifier  = knnClassifier.create(); // pre-trained KNN classifier model from lib
 const webcam      = ref( undefined );
 const webcam_ref  = ref( undefined );
 const test_ref    = ref( undefined );
 const show_stream = ref( false );
 const show_pdf    = ref( false );
+const zoom_in     = ref( false );
 
 const classes = reactive({
   default: {
@@ -103,6 +108,7 @@ const prediction = reactive({
   confidences: undefined,
 })
 
+const scroll = ref( 0 );
 
 //=======================
 // Functions
@@ -148,9 +154,22 @@ async function stream() {
 }
 
 function setTargetStyle() {
-  // todo: style target with prediction
-  console.log( test_ref.value );
-  console.log( prediction );
+  switch( prediction.label ) {
+    case 'zoom':
+      zoom_in.value = true;
+      break;
+    case 'down':
+      test_ref.value.scrollTop += ZOOM_VAL;
+      zoom_in.value = false;
+      break;
+    case 'up':
+      test_ref.value.scrollTop -= ZOOM_VAL;
+      zoom_in.value = false;
+      break;
+    case 'default':
+      zoom_in.value = false;
+      break;
+  }
 }
 
 //=======================
@@ -212,5 +231,17 @@ onMounted( async () => {
    height: 50%;
    overflow-y: scroll;
    padding: 22px;
+   transition-duration: 400ms;
+   scroll-behavior: smooth;
+   &.zoomed {
+    h1 {
+      font-size: 44px;
+      transition-duration: 400ms;
+    }
+    h2 {
+      font-size: 26px;
+      transition-duration: 400ms;
+    }
+   }
  }
 </style>
